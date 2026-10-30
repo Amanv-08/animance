@@ -45,8 +45,8 @@ const Navbar = () => {
         `transtion-colors duration-200 ${activeLink === href ? 'text-green-400' : 'text-gray-300 hover:text-green-400'}`
     
     return (
-        <div className="flex justify-center px-4 pt-4">
-            <nav className="w-full max-w-6xl rounded-3xl border border-white/10 bg-[#111313]/95 px-5 py-4 backdrop-blur-lg">
+        <div className="absolute top-0 left-0 z-50 w-full px-4 pt-4">
+            <nav className="mx-auto w-full max-w-6xl rounded-3xl border border-white/10 bg-[#111313]/50 px-5 py-4 backdrop-blur-lg">
 
                 {/* Top Row */}
                 <div className="flex items-center justify-between">
