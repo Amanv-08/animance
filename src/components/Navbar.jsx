@@ -1,75 +1,53 @@
 
 import { Search, BookmarkMinus, Menu, X } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
 const Navbar = () => {
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-    const [activeLink, setActiveLink] = useState('');
-
     const closeMenu = () => setIsMenuOpen(false);
+    const location = useLocation();
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const sections = ['home', 'explore', 'news'];
-
-            for (const id of sections.toReversed()) {
-                const section = document.getElementById(id);
-
-                if (section && section.getBoundingClientRect().top <= 150) {
-                    setActiveLink(`#${id}`);
-                    break;
-                };
-            }
-        }
-        window.addEventListener('scroll', handleScroll);
-        handleScroll();
-
-        return () => window.removeEventListener('scroll', handleScroll);
-
-    }, [])
 
     const navLinks = [
-        { name: 'Home', href: '#home' },
-        { name: 'Explore', href: '#explore' },
-        { name: 'News', href: '#news' }
+        { name: 'Home', href: '/' },
+        { name: 'Explore', href: '/explore' },
+        { name: 'News', href: '/news' }
     ]
 
-    const handleLinkClick = (href) => {
-        setActiveLink(href);
-        closeMenu();
-    };
 
     const getLinksClass = (href) =>
-        `transtion-colors duration-200 ${activeLink === href ? 'text-green-400' : 'text-gray-300 hover:text-green-400'}`
-    
+        `transition-colors duration-200 ${location.pathname === href
+            ? 'text-green-400'
+            : 'text-gray-300 hover:text-green-400'
+        }`;
+
     return (
         <div className="absolute top-0 left-0 z-50 w-full px-4 pt-4">
-            <nav className="mx-auto w-full max-w-6xl rounded-3xl border border-white/10 bg-[#111313]/50 px-5 py-4 backdrop-blur-lg">
+            <nav aria-label="Main navigation"  className="mx-auto w-full max-w-6xl rounded-3xl border border-white/10 bg-[#111313]/50 px-5 py-4 backdrop-blur-lg">
 
                 {/* Top Row */}
                 <div className="flex items-center justify-between">
 
                     {/* Logo */}
-                    <a
+                    <Link
                         className="text-xl font-bold text-yellow-400"
-                        href="#home"
+                        to="/"
                     >
                         Animance
-                    </a>
+                    </Link>
 
                     {/* Desktop Links */}
                     <div className="hidden items-center gap-5 md:flex">
                         {navLinks.map((link) =>
-                            <a
+                            <Link
                                 key={link.href}
-                                href={link.href}
-                                onClick={() => handleLinkClick(link.href)}
+                                to={link.href}
                                 className={getLinksClass(link.href)}
                             >
                                 {link.name}
-                            </a>
+                            </Link>
                         )}
                     </div>
 
@@ -96,6 +74,7 @@ const Navbar = () => {
 
                         <button
                             aria-label={isMenuOpen ? 'Close Menu' : 'Open Menu'}
+                            aria-expanded={isMenuOpen}
                             onClick={() => setIsMenuOpen(!isMenuOpen)}>
                             {isMenuOpen ? <X /> : <Menu />}
                         </button>
@@ -105,14 +84,14 @@ const Navbar = () => {
                 {/* Mobile Links - Always visible for now */}
                 {isMenuOpen && (<div className="mt-5 flex flex-col items-center gap-4 border-t border-white/10 pt-4 md:hidden">
                     {navLinks.map((link) =>
-                        <a
+                        <Link
                             key={link.href}
-                            href={link.href}
-                            onClick={() => handleLinkClick(link.href)}
+                            to={link.href}
+                            onClick={closeMenu}
                             className={getLinksClass(link.href)}
                         >
                             {link.name}
-                        </a>
+                        </Link>
                     )}
                     <button className="w-fit rounded-full bg-green-400 px-5 py-2 font-medium text-black">
                         Login
@@ -125,4 +104,3 @@ const Navbar = () => {
 }
 
 export default Navbar
- 
